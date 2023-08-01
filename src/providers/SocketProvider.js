@@ -1,4 +1,4 @@
-import React, { createContext, useState, useRef, useEffect } from "react";
+import React, { createContext, useState,useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import Peer from "simple-peer";
 
@@ -16,30 +16,33 @@ const ContextProvider = ({ children }) => {
   const [me, setMe] = useState("");
 
   const myVideo = useRef();
-  console.log("myvideo element", myVideo.current);
   const userVideo = useRef();
   const connectionRef = useRef();
 
   useEffect(() => {
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((currentStream) => {
-        console.log("Media stream retrieved:", currentStream);
+    const getUserMedia = async () => {
+      await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      try {
+        const currentStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: true
+        });
         setStream(currentStream);
-        if (myVideo.current) {
-          console.log("current media stream", myVideo.current);
-          myVideo.current.srcObject = currentStream;
-        }
-      })
-      .catch((error) => {
-        console.error("Error accessing media stream:", error);
-      });
-    socket.on("me", (id) => setMe(id));
+        console.log("shyam",currentStream)
+        myVideo.current.srcObject = currentStream;
+        console.log("sundar",myVideo.current.srcObject)
 
-    socket.on("callUser", ({ from, name: callerName, signal }) => {
-      setCall({ isReceivingCall: true, from, name: callerName, signal });
-    });
-  }, []);
+      } catch (err) {
+        console.log("Error:",err);
+      }
+      socket.on("me", (id) => setMe(id));
+
+      socket.on("callUser", ({ from, name: callerName, signal }) => {
+        setCall({ isReceivingCall: true, from, name: callerName, signal });
+      });
+    };
+    getUserMedia();
+  });
 
   const callUser = (id) => {
     const peer = new Peer({ initiator: true, trickle: false, stream });
@@ -86,9 +89,7 @@ const ContextProvider = ({ children }) => {
 
   const leaveCall = () => {
     setCallEnded(true);
-
     connectionRef.current.destroy();
-
     window.location.reload();
   };
 
