@@ -20,6 +20,7 @@ const ContextProvider = ({ children }) => {
   const connectionRef = useRef();
 
   useEffect(() => {
+    console.log('live')
     const getUserMedia = async () => {
       await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       try {
@@ -32,11 +33,7 @@ const ContextProvider = ({ children }) => {
           console.log("shyam",currentStream)
           myVideo.current.srcObject = currentStream;
           console.log("sundar",myVideo.current.srcObject)
-        }else{
-          return;
         }
-        
-
       } catch (err) {
         console.log("Error:",err);
       }
@@ -47,7 +44,7 @@ const ContextProvider = ({ children }) => {
       });
     };
     getUserMedia();
-  }, []);
+  }, [],[]);
 
   const callUser = (id) => {
     const peer = new Peer({ initiator: true, trickle: false, stream });
