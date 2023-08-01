@@ -31,7 +31,7 @@ const ContextProvider = ({ children }) => {
           myVideo.current.srcObject = currentStream;
         }
         peer.on("stream", (currentStream) => {
-          userVideo.current.srcObject = currentStream;
+          myVideo.current.srcObject = currentStream;
         });
       })
       .catch((error) => {
