@@ -19,29 +19,29 @@ const ContextProvider = ({ children }) => {
   const userVideo = useRef();
   const connectionRef = useRef();
 
+  useEffect(() => {
+    const getUserMedia = async () => {
+      const currentStream =  await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      setStream(currentStream);
+    }
+    getUserMedia();
+  },[]);
 
   useEffect(() => {
-    console.log('live')
-    const getUserMedia = async () => {
-    const currentStream =  await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       try {
-        setStream(currentStream);
         if(myVideo.current){
-          console.log("shyam",currentStream)
-          myVideo.current.srcObject = currentStream;
+          console.log("shyam",stream)
+          myVideo.current.srcObject = stream;
           console.log("sundar",myVideo.current.srcObject)
         }
       } catch (err) {
         console.log("Error:",err);
       }
       socket.on("me", (id) => setMe(id));
-
       socket.on("callUser", ({ from, name: callerName, signal }) => {
         setCall({ isReceivingCall: true, from, name: callerName, signal });
       });
-    };
-    getUserMedia();
-  }, []);
+  }, [stream]);
 
   const callUser = (id) => {
     const peer = new Peer({ initiator: true, trickle: false, stream });
