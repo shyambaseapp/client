@@ -20,14 +20,19 @@ const ContextProvider = ({ children }) => {
   const connectionRef = useRef();
 
   useEffect(() => {
+    const peer = new Peer({ initiator: true, trickle: false, stream });
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((currentStream) => {
         console.log("Media stream retrieved:", currentStream);
         setStream(currentStream);
         if (myVideo.current) {
+          console.log("current media stream", myVideo.current.srcObject);
           myVideo.current.srcObject = currentStream;
         }
+        peer.on("stream", (currentStream) => {
+          userVideo.current.srcObject = currentStream;
+        });
       })
       .catch((error) => {
         console.error("Error accessing media stream:", error);
