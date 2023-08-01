@@ -28,9 +28,14 @@ const ContextProvider = ({ children }) => {
           audio: true
         });
         setStream(currentStream);
-        console.log("shyam",currentStream)
-        myVideo.current.srcObject = currentStream;
-        console.log("sundar",myVideo.current.srcObject)
+        if(myVideo.current){
+          console.log("shyam",currentStream)
+          myVideo.current.srcObject = currentStream;
+          console.log("sundar",myVideo.current.srcObject)
+        }else{
+          return;
+        }
+        
 
       } catch (err) {
         console.log("Error:",err);
@@ -42,7 +47,7 @@ const ContextProvider = ({ children }) => {
       });
     };
     getUserMedia();
-  });
+  }, []);
 
   const callUser = (id) => {
     const peer = new Peer({ initiator: true, trickle: false, stream });
