@@ -16,6 +16,7 @@ const ContextProvider = ({ children }) => {
   const [me, setMe] = useState("");
 
   const myVideo = useRef();
+  console.log("myvideo element", myVideo.current);
   const userVideo = useRef();
   const connectionRef = useRef();
 
