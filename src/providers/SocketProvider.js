@@ -25,7 +25,7 @@ const ContextProvider = ({ children }) => {
       .then((currentStream) => {
         console.log("Media stream retrieved:", currentStream);
         setStream(currentStream);
-        myVideo.current.srcObject = currentStream;
+        myVideo.current?.srcObject = currentStream;
       })
       .catch((error) => {
         console.error("Error accessing media stream:", error);
