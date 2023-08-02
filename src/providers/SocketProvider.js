@@ -1,4 +1,4 @@
-import React, { createContext, useState,useEffect, useRef } from "react";
+import React, { createContext, useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import Peer from "simple-peer";
 
@@ -21,26 +21,27 @@ const ContextProvider = ({ children }) => {
 
   useEffect(() => {
     const getUserMedia = async () => {
-      const currentStream =  await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      const currentStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
       setStream(currentStream);
-    }
+    };
     getUserMedia();
-  },[]);
+  }, []);
 
   useEffect(() => {
-      try {
-        if(myVideo.current){
-          console.log("shyam",stream)
-          myVideo.current.srcObject = stream;
-          console.log("sundar",myVideo.current.srcObject)
-        }
-      } catch (err) {
-        console.log("Error:",err);
+    try {
+      if (myVideo.current) {
+        myVideo.current.srcObject = stream;
       }
-      socket.on("me", (id) => setMe(id));
-      socket.on("callUser", ({ from, name: callerName, signal }) => {
-        setCall({ isReceivingCall: true, from, name: callerName, signal });
-      });
+    } catch (err) {
+      console.log("Error:", err);
+    }
+    socket.on("me", (id) => setMe(id));
+    socket.on("callUser", ({ from, name: callerName, signal }) => {
+      setCall({ isReceivingCall: true, from, name: callerName, signal });
+    });
   }, [stream]);
 
   const callUser = (id) => {
