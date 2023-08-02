@@ -8,10 +8,10 @@ const VideoPlayer = () => {
     <div>
         
       { stream && (
-        <video style={{ height: "300px", width: "100%", overflowY: "auto" }} playsInline muted ref={myVideo} autoPlay />
+        <video style={{ height: "330px", width: "100%", overflowY: "auto" }} playsInline muted ref={myVideo} autoPlay />
       )}
       { callAccepted && !callEnded && (
-         <video style={{ height: "300px", width: "100%", overflowY: "auto" }} playsInline ref={userVideo} autoPlay /> 
+         <video style={{ height: "330px", width: "100%", overflowY: "auto" }} playsInline ref={userVideo} autoPlay /> 
       )}
     </div>
   );
